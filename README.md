@@ -21,8 +21,7 @@ b. [The fight against malaria](https://www.kaggle.com/teajay/the-fight-against-m
 *Who is dying and being saved from this destructive disease?*
 
 # Installation
-
-## Without Docker
+## Without Docker
 First of all, be sure to have python3 and pip3 installed.
 If not, run
 ```bash
@@ -35,7 +34,7 @@ cd mosquito-induced-epidemics-anticipation
 pip3 install -r requirements.txt
 ```
 
-## With Docker
+## With Docker
 *Working on it*
 
 ## Get your .env file to use Google API
@@ -46,7 +45,7 @@ This way, we eliminate useless information in the mosquito species identificatio
 
 Thus, create a ```.env``` file at the root of the project and write ```GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY```
 
-## Test
+## Test
 ### Test .env access
 Go to the root of the project and run
 ```bash
@@ -73,19 +72,20 @@ python3 -m image_recognition.preprocess_dataset
 If an image is detected to have already been preprocessed, it will be passed. 
 Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder if you want to perform a whole re-preprocessing.
 
-## Train models   
-### Launch an Inception retraining  
+## Train models   
+### Run an Inception retraining  
 ```bash
 python3 -m tests.test_command_classification --retrain
 ```
  
-### Launch a From Scratch Neural Network training  
-#### Launch a training  
+### Run a From Scratch Neural Network training  
+#### Run the training  
 ```bash
 python3 -m image_recognition.from_scratch_neural_network.train
 ```
 Please note that you can change the Neural Network parameters, that we call Hyperparameters. More information bellow.  
-#### Customize hyperparameters  
+
+#### Customize hyperparameters
  You can choose your own Neural Networks parameters by editing [image_recognition/from_scratch_neural_network/hyperparams.txt](image_recognition/from_scratch_neural_network/hyperparams.txt)
  
 Here are the influences of each parameter: 
