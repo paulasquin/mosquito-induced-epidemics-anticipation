@@ -2,9 +2,9 @@
 import requests
 import base64
 import cv2
-from utilities import Errors
-from utilities.EnvReader import get_api_key
-from utilities.Errors import APIQuotaExceeded
+from image_recognition.inception_classification.utilities import Errors
+from image_recognition.inception_classification.utilities.EnvReader import get_api_key
+from image_recognition.inception_classification.utilities.Errors import APIQuotaExceeded
 
 
 class Preprocessing:
