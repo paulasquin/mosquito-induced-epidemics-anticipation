@@ -40,9 +40,9 @@ pip3 install -r requirements.txt
 
 ## Get your .env file to use Google API
 You will have to use a Google Developer Account to create a .env file and use the Google Image API.
-We use this API in order to crop our images. 
+We only use this API in order to crop our images as a part of the preprocessing. 
 We identified an accuracy improvement by using insect-cropped images. 
-This way, we eliminate useless information in identifying the mosquito species.
+This way, we eliminate useless information in the mosquito species identification process.
 
 Thus, create a ```.env``` file at the root of the project and write ```GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY```
 
@@ -56,8 +56,8 @@ You should get ```Success!```.
 
 
 ### Test image preprocessing
-As explained before, you know that for improve models accuracy, we have to preprocessed images and crop them to the insect they contains.
-To test this features before doing it for the whole project, you can do :
+As explained before, you know that for improving our models accuracy, we have to preprocessed images and crop them to the insect they contains.
+To test this features you can run:
 ```bash
 python3 -m tests.test_preprocessing
 ```
@@ -65,10 +65,22 @@ python3 -m tests.test_preprocessing
 ## Initialise the project
 ### Preprocess the dataset
 
-In order to avoid re-preprocessing the whole dataset, we provide the preprocessed_dataset folder. 
+In order to avoid re-preprocessing the whole dataset, we provide the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder. 
 Still, if you want to reprocessed the dataset, because you want to have a try or because you add new images, just run:
 ```bash
 python3 -m image_recognition.preprocess_dataset
 ```
-If an image is detected to have already been preprocessed, it will be passed.
+If an image is detected to have already been preprocessed, it will be passed. 
+Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder if you want to perform a whole re-preprocessing.
 
+
+## Train models
+### Launch an Inception retraining
+ ```bash
+ python3 -m tests.test_command_classification --retrain
+ ```
+ 
+### Launch a From Scratch Neural Network training
+```bash
+python3 -m image_recognition.from_scratch_neural_network.train
+```
