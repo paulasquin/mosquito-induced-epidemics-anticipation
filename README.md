@@ -81,6 +81,58 @@ Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocess
  ```
  
 ### Launch a From Scratch Neural Network training
+#### Launch a training
 ```bash
 python3 -m image_recognition.from_scratch_neural_network.train
 ```
+Please note that you can change the Neural Network parameters, that we call Hyperparameters. More information bellow.
+
+#### Customize hyperparameters
+ You can choose your own Neural Networks parameters by editing [image_recognition/from_scratch_neural_network/hyperparams.txt](image_recognition/from_scratch_neural_network/hyperparams.txt)
+ 
+Here are the influences of each parameter: 
+
+**NUM_ITERATION**: number of training iterations.  
+\+ If too tall, the model still works but in the end will not learn anymore and performs unnecessary calculations  
+\- If it is too small, the model does not have time to reach its actual performance  
+
+**BATCH_SIZE**: The size of the image subpacket used for each train iteration.  
+\+ If too large, the necessary calculations and memory explode and the performance of the model decreases by loss of the generalization capacity.  
+\- If too small, gradient descents are less representative and performance calculations become noisy.  
+
+**LEARNING_RATE**: learning speed, speed coefficient of the gradient descent.  
+\+ If too large, the gradient descent can lead to a divergence.  
+\- If too low greatly slows the speed of calculation.  
+
+**SHORTER_DATASET_VALUE** optional: limit the number of images per categories.  
+\+ If the number of files used is too large, the demand in memory and calculation explodes.  
+\- If this number is too low, the model is lacking data to learn in a representative way.  
+
+**IMG_SIZE**: size in pixels of images, with a native maximum of 500px.  
+\+ If too big, the resolution of the images explodes the request in memory and calculation. Similarly, this feature may not be representative of the user application.  
+\- If too small, the resolution of the images no longer makes it possible to identify features on the cards.  
+
+**LES_CONV_FILTER_SIZE**: list of the size of the convolution filters, that is to say size of the local area to study. See Figures 4 & 5 of medium.com  
+\+ If values are too large or if the list is too big, features will become invisible to the model.  
+\- If values are too small or the list to small, the model will not be able to clear features effectively.  
+
+**LES_NUM_FILTERS_CONV**: list of the number of filters per convolution layer, that is to say number of neurons per layer.  
+\+ If the values are too large, the memory and the necessary computing capacity grow enormously.  
+\- If the values are too small, the model is not complex enough and can not learn data.  
+
+**FC_LAYER_SIZE**: size of the last Fully Connected layer (cf figure 9 in [this page](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)).  
+\+ If the value is too large, the memory charge explodes.  
+\- If the value is too low, the accuracy of the model falls considerably.  
+
+For instance you can have:
+```
+NUM_ITERATION = 500
+BATCH_SIZE = 30
+LEARNING_RATE = 0.001
+SHORTER_DATASET_VALUE = 0
+IMG_SIZE = 256
+LES_CONV_FILTER_SIZE = [5, 5, 5, 3, 3, 3]
+LES_NUM_FILTERS_CONV = [128, 128, 128, 64, 64, 64]
+FC_LAYER_SIZE = 128
+```
+Note : be sure that **LES_CONV_FILTER_SIZE** and **LES_NUM_FILTERS_CONV** lists have the same lengths.
