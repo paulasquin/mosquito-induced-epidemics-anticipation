@@ -73,21 +73,19 @@ python3 -m image_recognition.preprocess_dataset
 If an image is detected to have already been preprocessed, it will be passed. 
 Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder if you want to perform a whole re-preprocessing.
 
-
-## Train models
-### Launch an Inception retraining
- ```bash
- python3 -m tests.test_command_classification --retrain
- ```
+## Train models   
+### Launch an Inception retraining  
+```bash
+python3 -m tests.test_command_classification --retrain
+```
  
-### Launch a From Scratch Neural Network training
-#### Launch a training
+### Launch a From Scratch Neural Network training  
+#### Launch a training  
 ```bash
 python3 -m image_recognition.from_scratch_neural_network.train
 ```
-Please note that you can change the Neural Network parameters, that we call Hyperparameters. More information bellow.
-
-#### Customize hyperparameters
+Please note that you can change the Neural Network parameters, that we call Hyperparameters. More information bellow.  
+#### Customize hyperparameters  
  You can choose your own Neural Networks parameters by editing [image_recognition/from_scratch_neural_network/hyperparams.txt](image_recognition/from_scratch_neural_network/hyperparams.txt)
  
 Here are the influences of each parameter: 
@@ -112,7 +110,7 @@ Here are the influences of each parameter:
 \+ If too big, the resolution of the images explodes the request in memory and calculation. Similarly, this feature may not be representative of the user application.  
 \- If too small, the resolution of the images no longer makes it possible to identify features on the cards.  
 
-**LES_CONV_FILTER_SIZE**: list of the size of the convolution filters, that is to say size of the local area to study. See Figures 4 & 5 of medium.com  
+**LES_CONV_FILTER_SIZE**: list of the size of the convolution filters, that is to say size of the local area to study. See Figures 4 & 5 of [this page](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)  
 \+ If values are too large or if the list is too big, features will become invisible to the model.  
 \- If values are too small or the list to small, the model will not be able to clear features effectively.  
 
