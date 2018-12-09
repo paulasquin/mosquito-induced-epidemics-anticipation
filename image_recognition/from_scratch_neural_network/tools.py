@@ -7,6 +7,7 @@ import subprocess
 from PIL import Image
 import numpy as np
 
+
 class Point:
     x = 0
     y = 0
@@ -41,7 +42,7 @@ class BoundsBox:
         self.hi = hi
 
 
-def computeSections(lesAltitudes, sectionWidth):
+def compute_sections(lesAltitudes, sectionWidth):
     """ From given altitudes and section width, generate the lower and upper z values of a section.
      The values are taken from alt - width/2 to alt + width/2 """
 
@@ -86,7 +87,7 @@ def locate_files(extension, path=os.getcwd(), dbName="locate"):
     return paths
 
 
-def createFolder(path):
+def create_folder(path):
     """ Create the folder label if not already exists """
     if not os.path.isdir(path):
         print("Creating folder " + str(path))
@@ -94,7 +95,7 @@ def createFolder(path):
     return 0
 
 
-def filepathImage(pathToPly, label, imgFolder, prefix="", suffix="", folderName="", extension="jpg", ):
+def filepath_image(pathToPly, label, imgFolder, prefix="", suffix="", folderName="", extension="jpg", ):
     """ Generate the path name for the image, default folder name is label.title()
     A suffix can be indicated to indicate, for example, the altitude level """
     if folderName == "":
@@ -108,7 +109,7 @@ def filepathImage(pathToPly, label, imgFolder, prefix="", suffix="", folderName=
     return path
 
 
-def exportSlice(slice, extrema, path, label, width=500, height=500):
+def export_slice(slice, extrema, path, label, width=500, height=500):
     """ Export an image from given slice. Use of extrema and shape for resolution, label for naming the image """
     global imageFolder
     resize = slice.copy()
@@ -137,7 +138,7 @@ def exportSlice(slice, extrema, path, label, width=500, height=500):
               + "\nnp.minX : " + str(np.min(slice['x'])) + " np.maxX : " + str(np.max(slice['x'])) + "np.minY : " +
               str(np.min(slice['y'])) + " np.maxY : " + str(np.max(slice['y'])))
         return -1
-    createFolder(imageFolder + "/" + str(label.title()))
+    create_folder(imageFolder + "/" + str(label.title()))
     try:
         img = Image.fromarray(image, 'RGB')
         if imageFolder[:3] == "JPG":
@@ -152,7 +153,8 @@ def exportSlice(slice, extrema, path, label, width=500, height=500):
     print("\t" + path + " exported")
     return 0
 
-def getSlices(lesPoints, sectionsDownUp):
+
+def get_slices(lesPoints, sectionsDownUp):
     """ Open lesPoints, read the data and return slices points with extrema
     Vectorized implementation """
     #  Compute min and max values
@@ -169,7 +171,7 @@ def getSlices(lesPoints, sectionsDownUp):
     return sliced, [minX, maxX, minY, maxY, minZ, maxZ]
 
 
-def getExportNumber(modelFolder):
+def get_export_number(modelFolder):
     """ Get the number of the export folder looking at already existing folders
     Handle the presence of '_precisions' at the end of the folder name """
 

@@ -1,8 +1,9 @@
 # testing command_classification.py
-import classification.command_classification as command_classification
+import image_recognition.inception_classification.command_classification as command_classification
 import sys
 
-PATH_TEST_IMG = "/home/paul/Projects/POOA/crop_pic_005.jpg"
+PATH_TEST_IMG = "pic_014_cropped.jpg"
+
 
 def test_command_retrain():
     command_classification.train_and_monitor()

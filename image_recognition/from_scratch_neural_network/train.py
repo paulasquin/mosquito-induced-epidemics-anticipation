@@ -4,7 +4,7 @@
 # The scripts have been modified by Paul Asquin for a Room Classification project based on rooms 2D Maps
 # Written by Paul Asquin - paul.asquin@gmail.com - Summer 2018
 
-import dataset
+import image_recognition.from_scratch_neural_network.dataset as dataset
 import math
 import random
 import numpy as np
@@ -13,9 +13,12 @@ import sys
 import gc
 import time
 import shutil
-from tools import *
+from image_recognition.from_scratch_neural_network.tools import *
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# Hide useless tensorflow warnings
 import tensorflow as tf
+
 tf.logging.set_verbosity(tf.logging.ERROR)
 # Adding Seed so that random initialization is consistent
 from numpy.random import seed
@@ -27,9 +30,8 @@ set_random_seed(2)
 # Free not allocated memory
 gc.collect()
 
-# Hide useless tensorflow warnings
-
-HYPERPARAM_TXT_PATH = 'hyperparams.txt'
+FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
+HYPERPARAM_TXT_PATH = FOLDER_PATH + '/hyperparams.txt'
 
 # === Model parameters ===
 # HYPERPARAM
@@ -41,7 +43,9 @@ IMG_SIZE = 256
 LES_NUM_FILTERS_CONV = [64, 64, 64, 128, 128, 128, 256, 256, 256, 512, 512, 512]
 LES_CONV_FILTER_SIZE = [3] * len(LES_NUM_FILTERS_CONV)
 FC_LAYER_SIZE = 128
-DATASET_PATH = "../Datasets/JPG"
+
+DATASET_PATH = '/'.join(FOLDER_PATH.split("/")[:-1]) + "/dataset/training"
+# sys.exit(0)
 
 # Load hyperparams from hyperparams.txt file if exists
 if os.path.isfile(HYPERPARAM_TXT_PATH):
@@ -60,8 +64,6 @@ if os.path.isfile(HYPERPARAM_TXT_PATH):
                 IMG_SIZE = int(line.split(" = ")[-1])
             elif 'FC_LAYER_SIZE' in line:
                 FC_LAYER_SIZE = int(line.split(" = ")[-1])
-            elif 'DATASET_PATH' in line:
-                DATASET_PATH = line.split(" = ")[-1].replace("\n", '').replace("'", "")
             elif 'LES_NUM_FILTERS_CONV' in line:
                 LES_NUM_FILTERS_CONV = \
                     list(map(int, line.replace('LES_NUM_FILTERS_CONV = [', '').replace(']', '').split(', ')))
@@ -69,13 +71,15 @@ if os.path.isfile(HYPERPARAM_TXT_PATH):
                 LES_CONV_FILTER_SIZE = \
                     list(map(int, line.replace('LES_CONV_FILTER_SIZE = [', '').replace(']', '').split(', ')))
 
-NUM_CHANNELS = 1
+NUM_CHANNELS = 3
 VALIDATION_PERCENTAGE = 0.2  # 20% of the data will automatically be used for validation
-DATASET_SAVE_DIR_PATH = os.getcwd() + "/" + DATASET_PATH.split("/")[-1].lower() + "_" + str(IMG_SIZE) + "_" + str(SHORTER_DATASET_VALUE)
-EXPORTS_DIR_PATH = os.getcwd() + '/exports'
-createFolder(EXPORTS_DIR_PATH)
-EXPORTNUM_DIR_PATH = EXPORTS_DIR_PATH + "/export_" + str(getExportNumber(EXPORTS_DIR_PATH + "/"))
-createFolder(EXPORTNUM_DIR_PATH)
+DATASET_SAVE_DIR_PATH = \
+    FOLDER_PATH + "/" + DATASET_PATH.split("/")[-1].lower() + "_" + str(IMG_SIZE) + "_" + str(SHORTER_DATASET_VALUE)
+EXPORTS_DIR_PATH = FOLDER_PATH + '/exports'
+create_folder(EXPORTS_DIR_PATH)
+EXPORTNUM = str(get_export_number(EXPORTS_DIR_PATH + "/"))
+EXPORTNUM_DIR_PATH = EXPORTS_DIR_PATH + "/export_" + EXPORTNUM
+create_folder(EXPORTNUM_DIR_PATH)
 MODEL_DIR_PATH = EXPORTNUM_DIR_PATH + "/model"
 INFO_TXT_PATH = EXPORTNUM_DIR_PATH + "/info.txt"
 CSV_TRAIN = EXPORTNUM_DIR_PATH + "/train.csv"
@@ -83,6 +87,7 @@ CSV_TRAIN = EXPORTNUM_DIR_PATH + "/train.csv"
 if len(LES_CONV_FILTER_SIZE) != len(LES_NUM_FILTERS_CONV):
     print("Convolutional layers params aren't the same length. Setting to 3*3")
     LES_CONV_FILTER_SIZE = [3] * len(LES_NUM_FILTERS_CONV)
+
 
 class ConvolutionLayer:
     inputt = 0
@@ -170,7 +175,8 @@ def create_fc_layer(input, num_inputs, num_outputs, use_relu=True):
     return layer
 
 
-def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss, session, accuracy, i, milestone=False, time_left=0):
+def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss, session, accuracy, i, milestone=False,
+                  time_left=0):
     acc = session.run(accuracy, feed_dict=feed_dict_train)
     val_acc = session.run(accuracy, feed_dict=feed_dict_validate)
     msg = "\tTraining Epoch {0}\n\t\tTraining Accuracy\t{1:>6.1%}\n\t\tValidation Accuracy\t{2:>6.1%}\n\t\tValidation Loss\t\t{3:.3f}"
@@ -182,7 +188,7 @@ def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss, session,
             min = int((time_left - h * 3600) / 60)
             time_left_msg = "\n\t\tTime Left\t\t~ " + str(h) + "h" + str(min) + "m"
     else:
-        print("\tSaving the model." + " "*20)
+        print("\tSaving the model." + " " * 20)
 
     with open(CSV_TRAIN, 'a') as f:
         txt = str(i) + "\t" + str(epoch + 1) + "\t" + str(acc) + "\t" + str(val_acc) + "\t" + str(val_loss) + "\n"
@@ -196,15 +202,15 @@ def train(num_iteration, session, data, cost, saver, accuracy, optimizer, x, y_t
     tic = time.time()
     time_left = 0
     for i in range(num_iteration):
-        print(str(i+1) + "/" + str(num_iteration) + " - Loading the batch" + " "*20, end="\r")
+        print(str(i + 1) + "/" + str(num_iteration) + " - Loading the batch" + " " * 20, end="\r")
         x_batch, y_true_batch, _, _ = data.train.next_batch(BATCH_SIZE)
         x_valid_batch, y_valid_batch, _, _ = data.valid.next_batch(BATCH_SIZE)
         feed_dict_tr = {x: x_batch, y_true: y_true_batch}
 
-        print(str(i+1) + "/" + str(num_iteration) + " - Running the optimization" + " "*20, end="\r")
+        print(str(i + 1) + "/" + str(num_iteration) + " - Running the optimization" + " " * 20, end="\r")
         session.run(optimizer, feed_dict=feed_dict_tr)
         feed_dict_val = {x: x_valid_batch, y_true: y_valid_batch}
-        print(str(i+1) + "/" + str(num_iteration) + " - Completed" + " "*20)
+        print(str(i + 1) + "/" + str(num_iteration) + " - Completed" + " " * 20)
 
         if i % int(data.train.num_examples / BATCH_SIZE) == 0:
             val_loss = session.run(cost, feed_dict=feed_dict_val)
@@ -220,14 +226,14 @@ def train(num_iteration, session, data, cost, saver, accuracy, optimizer, x, y_t
             val_loss = session.run(cost, feed_dict=feed_dict_val)
             epoch = int(i / int(data.train.num_examples / BATCH_SIZE))
             show_progress(
-                epoch, 
-                feed_dict_tr, 
-                feed_dict_val, 
-                val_loss, 
-                session=session, 
-                accuracy=accuracy, 
+                epoch,
+                feed_dict_tr,
+                feed_dict_val,
+                val_loss,
+                session=session,
+                accuracy=accuracy,
                 i=i,
-                milestone=True, 
+                milestone=True,
                 time_left=time_left
             )
 
@@ -248,17 +254,18 @@ def init():
         f.write("Iteration\tEpoch\tTraining Accuracy\tValidation Accuracy\tValidation Loss\n")
 
 
-def cleanExports():
+def clean_exports():
     """ Remove folder with no model written """
     les_folders = os.listdir(EXPORTS_DIR_PATH)
     for folder in les_folders:
-        if "export" in folder and not os.path.isfile(EXPORTS_DIR_PATH + "/" + folder + "/model.meta"):
+        model_meta = EXPORTS_DIR_PATH + "/" + folder + "/model.meta"
+        if "export" in folder and EXPORTNUM not in folder and not os.path.isfile(model_meta):
             print("Removing " + EXPORTS_DIR_PATH + "/" + folder)
-            shutil.rmtree(EXPORTS_DIR_PATH + "/" + folder)    
+            shutil.rmtree(EXPORTS_DIR_PATH + "/" + folder)
 
 
 def main():
-    cleanExports()
+    clean_exports()
     gc.collect()
     init()
     session = tf.Session()
@@ -363,6 +370,7 @@ def main():
     gc.collect()
     print(" - Done\n\n")
     return 0
+
 
 if __name__ == '__main__':
     main()
