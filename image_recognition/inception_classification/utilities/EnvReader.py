@@ -1,4 +1,4 @@
-from utilities.Errors import EnvError
+from image_recognition.inception_classification.utilities.Errors import EnvError
 import os
 
 if os.path.exists(".env"):
@@ -26,6 +26,7 @@ def get_api_key():
         return os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
     except Exception:
         raise EnvError()
+
 
 def get_port_number():
     """

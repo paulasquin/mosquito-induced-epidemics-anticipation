@@ -2,8 +2,10 @@
 
 import glob
 import os
-from classification.preprocessing import Preprocessing
-from utilities import Errors
+from image_recognition.preprocessing import Preprocessing
+from image_recognition.inception_classification.utilities import Errors
+
+FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class InitProject():
@@ -18,8 +20,8 @@ class InitProject():
 
     def create_preprocessed_dataset(
             self,
-            dataset_path="dataset/training",
-            preprocessed_dataset_path="preprocessed_dataset"
+            dataset_path=FOLDER_PATH + "/dataset/training",
+            preprocessed_dataset_path=FOLDER_PATH + "/preprocessed_dataset"
     ):
         print("Starting creation of the preprocessed dataset")
         self.check_create_folder(preprocessed_dataset_path)
