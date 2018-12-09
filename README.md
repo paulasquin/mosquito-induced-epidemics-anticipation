@@ -46,4 +46,29 @@ This way, we eliminate useless information in identifying the mosquito species.
 
 Thus, create a ```.env``` file at the root of the project and write ```GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY```
 
- 
+## Test
+### Test .env access
+Go to the root of the project and run
+```bash
+python3 -m tests.test_env
+```
+You should get ```Success!```.
+
+
+### Test image preprocessing
+As explained before, you know that for improve models accuracy, we have to preprocessed images and crop them to the insect they contains.
+To test this features before doing it for the whole project, you can do :
+```bash
+python3 -m tests.test_preprocessing
+```
+
+## Initialise the project
+### Preprocess the dataset
+
+In order to avoid re-preprocessing the whole dataset, we provide the preprocessed_dataset folder. 
+Still, if you want to reprocessed the dataset, because you want to have a try or because you add new images, just run:
+```bash
+python3 -m image_recognition.preprocess_dataset
+```
+If an image is detected to have already been preprocessed, it will be passed.
+
