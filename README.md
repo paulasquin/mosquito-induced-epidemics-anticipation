@@ -72,6 +72,12 @@ python3 -m image_recognition.preprocess_dataset
 If an image is detected to have already been preprocessed, it will be passed. 
 Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder if you want to perform a whole re-preprocessing.
 
+### Augment the dataset
+In order to improve our models accuracy, a good way to augment the data is to propose rotated pictures.
+Thus, to perform augmentatin as ```width-flip, height-flip, cwRotate, ccwRotate, inverse``` run:
+```bash
+python3 -m image_recognition.image_augmenting
+```
 ## Train models   
 ### Run an Inception retraining  
 ```bash
