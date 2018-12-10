@@ -7,6 +7,7 @@ import subprocess
 from PIL import Image
 import numpy as np
 
+FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 
 def relative_to_absolute_path(path=""):
     """ Send back absolute path if relative was given """
@@ -18,7 +19,7 @@ def relative_to_absolute_path(path=""):
     return path
 
 
-def locate_files(extension, path=os.getcwd(), dbName="locate"):
+def locate_files(extension, path=FOLDER_PATH, dbName="locate"):
     """ Locate files using .db database. May need sudo to write the database"""
     print("\nCreating the database \"" + dbName + ".db\" for the \"local\" command")
     print("Searching " + extension + " in " + path)

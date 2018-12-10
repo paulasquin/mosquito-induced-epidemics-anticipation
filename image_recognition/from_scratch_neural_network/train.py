@@ -44,7 +44,7 @@ LES_NUM_FILTERS_CONV = [64, 64, 64, 128, 128, 128, 256, 256, 256, 512, 512, 512]
 LES_CONV_FILTER_SIZE = [3] * len(LES_NUM_FILTERS_CONV)
 FC_LAYER_SIZE = 128
 
-DATASET_PATH = '/'.join(FOLDER_PATH.split("/")[:-1]) + "/dataset/training"
+DATASET_PATH = '/'.join(FOLDER_PATH.split("/")[:-1]) + "/preprocessed_dataset"
 # sys.exit(0)
 
 # Load hyperparams from hyperparams.txt file if exists
@@ -202,6 +202,7 @@ def train(num_iteration, session, data, cost, saver, accuracy, optimizer, x, y_t
     tic = time.time()
     time_left = 0
     for i in range(num_iteration):
+        time.sleep(0.2)
         print(str(i + 1) + "/" + str(num_iteration) + " - Loading the batch" + " " * 20, end="\r")
         x_batch, y_true_batch, _, _ = data.train.next_batch(BATCH_SIZE)
         x_valid_batch, y_valid_batch, _, _ = data.valid.next_batch(BATCH_SIZE)
