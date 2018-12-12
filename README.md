@@ -3,7 +3,7 @@ Use Machine Learning to recognise mosquito species from pictures and anticipate 
 
 # Introduction
 **This project** 
-* is led by Robin Schowb and Paul Asquin form the french engineering school CentraleSupélec.  
+* is led by [Robin Schowb](https://www.linkedin.com/in/robin-schwob-608934100/) and [Paul Asquin](https://www.linkedin.com/in/paulasquin) from the french engineering school CentraleSupélec.  
 * is led autonomously and takes place in Machine Learning courses teached by Pr [Fragkiskos D. Malliaros](http://fragkiskos.me/).  
 * complete another project, led by Marc Than Van Con, Victor Aubin and Paul Asquin on developing a Web Platform to share field data of encountered mosquitoes : https://github.com/mosquito-boys/mosquito-monitoring 
 
