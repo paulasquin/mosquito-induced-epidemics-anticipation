@@ -35,7 +35,36 @@ pip3 install -r requirements.txt
 ```
 
 ## With Docker
-*Working on it*
+Note : depending of your installation, you may note need ```sudo```
+### Build the docker image:
+```bash
+sudo docker-compose build
+```
+### Up the docker
+```bash
+sudo docker-compose up -d
+```
+This will run the docker container in background and display it name.
+It should be of format ```mosquito-induced-epidemics-anticipation_mosquito_1_######```. 
+To make our life easier, run the command:
+```bash
+export mosquito=mosquito-induced-epidemics-anticipation_mosquito_1_######
+```
+### Optional : Check for docker container names
+```bash
+sudo docker ps --format "{{.Names}}"
+```
+### Enter in the inner bash
+Open a new terminal and run:
+```bash
+sudo docker exec -it $mosquito bash
+``` 
+
+### Stop the docker container
+```bash
+sudo docker stop $mosquito
+```
+
 
 ## Get your .env file to use Google API
 You will have to use a Google Developer Account to create a .env file and use the Google Image API.
