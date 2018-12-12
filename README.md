@@ -42,7 +42,7 @@ Note : depending of your installation, you may note need ```sudo```
 sudo docker-compose build
 ```
    
-### Up the docker   
+### Up the docker   
 ```bash
 sudo docker-compose up -d
 ```
@@ -53,7 +53,7 @@ To make our life easier, run the command:
 export mosquito=YOUR_CONTAINER_NAME
 ```
    
-### Optional : Check for docker container names   
+### Optional : Check for docker container names   
 ```bash
 sudo docker ps --format "{{.Names}}"
 ```
@@ -66,7 +66,7 @@ sudo docker exec -it $mosquito bash
 You can now run commands in the docker container!
 If you want to run multiples command at the same time, you can re-run this command in new terminal.   
 
-### Stop the docker container
+### Stop the docker container
 ```bash
 sudo docker stop $mosquito
 ```
