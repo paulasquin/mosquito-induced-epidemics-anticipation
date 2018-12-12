@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/paul/Github/mosquito-induced-epidemics-anticipation/image_recognition/from_scratch_neural_network/exports/export_0/model"
+all_model_checkpoint_paths: "/home/paul/Github/mosquito-induced-epidemics-anticipation/image_recognition/from_scratch_neural_network/exports/export_0/model"
