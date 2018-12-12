@@ -36,29 +36,35 @@ pip3 install -r requirements.txt
 
 ## With Docker
 Note : depending of your installation, you may note need ```sudo```
+   
 ### Build the docker image:
 ```bash
 sudo docker-compose build
 ```
-### Up the docker
+   
+### Up the docker   
 ```bash
 sudo docker-compose up -d
 ```
 This will run the docker container in background and display it name.
-It should be of format ```mosquito-induced-epidemics-anticipation_mosquito_1_######```. 
+You container's name should be of format ```mosquito-induced-epidemics-anticipation_mosquito_1_######```.   
 To make our life easier, run the command:
 ```bash
-export mosquito=mosquito-induced-epidemics-anticipation_mosquito_1_######
+export mosquito=YOUR_CONTAINER_NAME
 ```
-### Optional : Check for docker container names
+   
+### Optional : Check for docker container names   
 ```bash
 sudo docker ps --format "{{.Names}}"
 ```
-### Enter in the inner bash
+
+### Enter in the inner bash   
 Open a new terminal and run:
 ```bash
 sudo docker exec -it $mosquito bash
 ``` 
+You can now run commands in the docker container!
+If you want to run multiples command at the same time, you can re-run this command in new terminal.   
 
 ### Stop the docker container
 ```bash
