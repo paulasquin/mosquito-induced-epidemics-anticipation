@@ -55,7 +55,7 @@ To make our life easier, run the command:
 export mosquito=YOUR_CONTAINER_NAME
 ```
 
-### Optional : Run the project with a Google API Key
+### Optional : Run the project with a Google API Key
 You may want to run the project already knowing that you don't want to use preprocessing features.
 Thus, you don't need the ```.env``` file with its Google API Key.
 You can run:
@@ -199,7 +199,7 @@ Contains instructions for docker.
  * Link the application folder to the docker container
  * Keep the container alive with sleep command
  
-## docker-compose.yml and docker-compose-without-env.yml 
+## docker-compose.yml and docker-compose-without-env.yml 
 Simplify docker commands by mounting .env and app folders in a modifiable way.
 
 ## requirements.txt
