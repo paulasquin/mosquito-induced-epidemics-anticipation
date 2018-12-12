@@ -33,6 +33,7 @@ git clone https://github.com/paulasquin/mosquito-induced-epidemics-anticipation.
 cd mosquito-induced-epidemics-anticipation
 pip3 install -r requirements.txt
 ```
+If you encounter an issue with the installation of Tensorflow 1.5, it may be linked to Python 3.7. Try to use Python 3.6, or choose to use Docker!
 
 ## With Docker
 Be sure to have docker and docker-compose installed. 
