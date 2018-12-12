@@ -54,6 +54,15 @@ To make our life easier, run the command:
 ```bash
 export mosquito=YOUR_CONTAINER_NAME
 ```
+
+### Optional : Run the project with a Google API Key
+You may want to run the project already knowing that you don't want to use preprocessing features.
+Thus, you don't need the ```.env``` file with its Google API Key.
+You can run:
+```bash
+sudo docker-compose -f docker-compose-without-env.yml build
+sudo docker-compose -f docker-compose-without-env.yml up -d
+```
    
 ### Optional : Check for docker container names   
 ```bash
@@ -117,20 +126,20 @@ Thus, to perform augmentatin as ```width-flip, height-flip, cwRotate, ccwRotate,
 ```bash
 python3 -m image_recognition.image_augmenting
 ```
-## Train models   
-### Run an Inception retraining  
+# Train models   
+## Run an Inception retraining  
 ```bash
-python3 -m tests.test_command_classification --retrain
+python3 -m image_recognition.inception_classification.command_classification.train_and_monitor
 ```
  
-### Run a From Scratch Neural Network training  
-#### Run the training  
+## Run a From Scratch Neural Network training  
+### Run the training  
 ```bash
 python3 -m image_recognition.from_scratch_neural_network.train
 ```
 Please note that you can change the Neural Network parameters, that we call Hyperparameters. More information bellow.  
 
-#### Customize hyperparameters
+### Customize hyperparameters
  You can choose your own Neural Networks parameters by editing [image_recognition/from_scratch_neural_network/hyperparams.txt](image_recognition/from_scratch_neural_network/hyperparams.txt)
  
 Here are the influences of each parameter: 
@@ -179,3 +188,100 @@ LES_NUM_FILTERS_CONV = [128, 128, 128, 64, 64, 64]
 FC_LAYER_SIZE = 128
 ```
 Note : be sure that **LES_CONV_FILTER_SIZE** and **LES_NUM_FILTERS_CONV** lists have the same lengths.
+
+# Code explanation
+## .env
+This file contain the API key used for preprocessing the dataset, for the insect-cropping process.
+
+## Dockerfile
+Contains instructions for docker.
+ * Use python3 build
+ * Link the application folder to the docker container
+ * Keep the container alive with sleep command
+ 
+## docker-compose.yml and docker-compose-without-env.yml 
+Simplify docker commands by mounting .env and app folders in a modifiable way.
+
+## requirements.txt
+Contains the required pip3 modules to install.
+
+## tests
+Run tests to check the project function
+
+### test_env.py
+Test the .env existence and operation 
+ 
+### test_inception_classification.py
+Test image recognition on the inception retraining side.
+You can test inception retraining and inception image labelling:
+```bash
+python3 -m tests.test_inception_classification [command]
+```
+```[command]``` can be 
+```
+--retrain : retrain the inception model
+--label [optional path to one or more images to label]
+```
+
+### test_preprocessing
+Test a one image preprocessing : use pic_014 in the tests folder to generate framed and crop pictures.
+The output images will also be stored in the tests folder for you to verify them.
+
+## image_recognition/
+Folder containing image recognition techniques and dataset processing.
+
+### preprocessing.py
+Use Google Vision API to crop images to the "insect" box.
+
+* mosquito_position: Send the image to the API and retrieve mosquito position. 
+Return the insect coordinates on a 0-1 scale.
+* Compute which pixel form the insect boundaries
+* mosquito_cropping: crop the mosquito image to insect boundaries
+* mosquito_framing: frame the mosquito in a squared to visualize the identification
+* save_crop_img: command and save the image cropping
+* save_framed_img: command and save the image framing
+
+### preprocess_dataset.py
+Command the dataset preprocessing, and avoid to re-preprocessed already preprocessed pictures.
+
+* check_create_folder: If destination folder doesn't exists, create it.
+* create_preprocessed_dataset: command dataset preprocessing for not already preprocessed pictures.
+
+### image_augmenting.py
+Augment the dataset for better image recognition performance (in particular for from scratch models).
+Perform image rotation augmentations.
+* get_augmentation_path: Generate the augmented image path, with given original path and augmentation
+* not_already_augmented: Return False if asked augmentation already exists or if the file is already an augmentation
+* augment_image: perform augmentations.
+
+### dataset/
+The raw dataset
+
+### preprocessed_dataset/
+The dataset after having perform the preprocessing
+
+### preprocessed_dataset_augmented/
+The dataset after having perform augmentation on the preprocessed_dataset
+
+### inception_classification/
+Inception retraining to perform picture classification
+
+#### command_classification.py
+Perform retrain, monitoring and predict commands.
+
+* Retrain: Command the retraining agent with indicated parameters and chosen model.
+* Tools: Arrange the models in different files for monitoring the model versions 
+and get the number of the export folder looking at already existing folders
+* Tensorboard: Command Tensorboard monitoring
+* Predict: perform label prediction for given images. Make the user able to chose the model or let it automatic. 
+* train_and_monitor: run both Retrain and Tensorboard
+* label_automatic: run prediction on a file using automatic model folder 
+
+#### retrain.py
+Retrain agent provided by Google
+
+#### label_image.py
+Model using agent provided by Google
+
+### from_scratch_neural_network/
+From scratch neural network creation and training to perform picture classification
