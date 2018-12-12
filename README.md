@@ -35,7 +35,9 @@ pip3 install -r requirements.txt
 ```
 
 ## With Docker
-Note : depending of your installation, you may note need ```sudo```
+Be sure to have docker and docker-compose installed. 
+If you haven't them already, you can follow those tutorials for [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) and [docker-compose](https://docs.docker.com/compose/install/).  
+Note for incoming commands : depending of your installation, you may not need ```sudo```
    
 ### Build the docker image:
 ```bash
@@ -46,8 +48,8 @@ sudo docker-compose build
 ```bash
 sudo docker-compose up -d
 ```
-This will run the docker container in background and display it name.
-You container's name should be of format ```mosquito-induced-epidemics-anticipation_mosquito_1_######```.   
+This will run the docker container in background and display its name.
+Your container's name should be of format ```mosquito-induced-epidemics-anticipation_mosquito_1_######```.   
 To make our life easier, run the command:
 ```bash
 export mosquito=YOUR_CONTAINER_NAME
@@ -70,6 +72,8 @@ If you want to run multiples command at the same time, you can re-run this comma
 ```bash
 sudo docker stop $mosquito
 ```
+You may have to wait up to ~8 seconds before the container stops. 
+This is because of the ```sleep infinity``` command that is keeping the container alive.
 
 
 ## Get your .env file to use Google API
