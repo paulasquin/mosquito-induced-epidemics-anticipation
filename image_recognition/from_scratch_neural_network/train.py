@@ -1,9 +1,3 @@
-#!/usr/bin/python3
-# This project use the structure of the cv-tricks tutorial on Image Classification :
-# http://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/
-# The scripts have been modified by Paul Asquin
-# Written by Paul Asquin - paul.asquin@gmail.com
-
 import image_recognition.from_scratch_neural_network.dataset as dataset
 import math
 import random

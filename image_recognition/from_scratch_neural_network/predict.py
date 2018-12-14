@@ -1,10 +1,3 @@
-#!/usr/bin/python3
-# This project use the structure of the cv-tricks tutorial on Image Classification :
-# http://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/
-# The scripts have been modified by Paul Asquin for a Room Classification project based on rooms 2D Maps
-# Written by Paul Asquin - paul.asquin@gmail.com - Summer 2018
-
-
 import image_recognition.from_scratch_neural_network.dataset as dataset
 import image_recognition.from_scratch_neural_network.train as train
 import numpy as np
