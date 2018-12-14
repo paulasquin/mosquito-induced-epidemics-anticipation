@@ -17,7 +17,7 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-IMG_SIZE = 256
+IMG_SIZE = 150
 NUM_CHANNELS = 3
 
 
