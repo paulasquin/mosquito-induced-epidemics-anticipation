@@ -10,8 +10,10 @@ import tensorflow_hub as hub
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
-IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset"])
+IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset/train"])
 URL_MODULE = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+
+
 # "https://tfhub.dev/google/imagenet/pnasnet_large/classification/2"
 # "https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1"
 
@@ -50,7 +52,6 @@ class Retrain(th.Thread):
               " --tfhub_module " + URL_MODULE
         # " --validation_percentage 5" + \
         # " --testing_percentage 5"  # + \
-
 
         print("Running retrain : \n" + cmd)
         with open(export_path + "/cmd.txt", 'w') as f:  # saving command for future monitoring
