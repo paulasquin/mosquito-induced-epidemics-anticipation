@@ -1,8 +1,10 @@
 # testing command_classification.py
 import image_recognition.inception_classification.command_classification as command_classification
 import sys
+import os
 
-PATH_TEST_IMG = "pic_014_cropped.jpg"
+FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
+PATH_TEST_IMG = FOLDER_PATH + "/anopheles_cropped.jpg"
 
 
 def test_inception_retrain():
