@@ -1,7 +1,12 @@
 numpy==1.14.1
 requests>=2.20.0
 tensorflow==1.5
+tensorflow-gpu==1.5
 tensorflow_hub==0.1.1
 tensorboard==1.8.0
 opencv_contrib_python==3.4.3.18
-sklearn
+scikit-learn==0.20.1
+h5py==2.8.0
+graphviz==0.10.1
+pydot==1.4.1
+keras==2.2.4
