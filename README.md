@@ -94,24 +94,9 @@ This way, we eliminate useless information in the mosquito species identificatio
 
 Thus, create a ```.env``` file at the root of the project and write ```GOOGLE_APPLICATION_CREDENTIALS=YOUR_KEY```
 
-## Test
-### Test .env access
-Go to the root of the project and run
-```bash
-python3 -m tests.test_env
-```
-You should get ```Success!```.
 
-
-### Test image preprocessing
-As explained before, you know that for improving our models accuracy, we have to preprocessed images and crop them to the insect they contains.
-To test this features you can run:
-```bash
-python3 -m tests.test_preprocessing
-```
-
-## Initialise the project
-### Preprocess the dataset
+# Initialise the project
+## Preprocess the dataset
 
 In order to avoid re-preprocessing the whole dataset, we provide the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder. 
 Still, if you want to reprocessed the dataset, because you want to have a try or because you add new images, just run:
@@ -121,12 +106,14 @@ python3 -m image_recognition.preprocess_dataset
 If an image is detected to have already been preprocessed, it will be passed. 
 Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocessed_dataset) folder if you want to perform a whole re-preprocessing.
 
-### Augment the dataset
+## Augment the dataset
 In order to improve our models accuracy, a good way to augment the data is to propose rotated pictures.
 Thus, to perform augmentatin as ```width-flip, height-flip, cwRotate, ccwRotate, inverse``` run:
 ```bash
 python3 -m image_recognition.image_augmenting
 ```
+
+
 # Train models   
 ## Run an Inception retraining  
 ```bash
@@ -189,6 +176,35 @@ LES_NUM_FILTERS_CONV = [128, 128, 128, 64, 64, 64]
 FC_LAYER_SIZE = 128
 ```
 Note : be sure that **LES_CONV_FILTER_SIZE** and **LES_NUM_FILTERS_CONV** lists have the same lengths.
+
+# Run tests
+## Test .env access
+Go to the root of the project and run
+```bash
+python3 -m tests.test_env
+```
+You should get ```Success!```.
+
+
+## Test image preprocessing
+As explained before, you know that for improving our models accuracy, we have to preprocessed images and crop them to the insect they contains.
+To test this features you can run:
+```bash
+python3 -m tests.test_preprocessing
+```
+  
+  
+## Test inception retraining and labelling
+You can test inception retraining and inception image labelling:
+```bash
+python3 -m tests.test_inception_classification [command]
+```
+```[command]``` can be 
+```
+--retrain : retrain the inception model
+--label [optional path to one or more images to label]
+```
+
 
 # Code explanation
 ## .env
