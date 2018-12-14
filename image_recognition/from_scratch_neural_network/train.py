@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # This project use the structure of the cv-tricks tutorial on Image Classification :
 # http://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/
-# The scripts have been modified by Paul Asquin for a Room Classification project based on rooms 2D Maps
-# Written by Paul Asquin - paul.asquin@gmail.com - Summer 2018
+# The scripts have been modified by Paul Asquin
+# Written by Paul Asquin - paul.asquin@gmail.com
 
 import image_recognition.from_scratch_neural_network.dataset as dataset
 import math
@@ -44,7 +44,7 @@ LES_NUM_FILTERS_CONV = [64, 64, 64, 128, 128, 128, 256, 256, 256, 512, 512, 512]
 LES_CONV_FILTER_SIZE = [3] * len(LES_NUM_FILTERS_CONV)
 FC_LAYER_SIZE = 128
 
-DATASET_PATH = '/'.join(FOLDER_PATH.split("/")[:-1]) + "/preprocessed_dataset"
+DATASET_PATH = '/'.join(FOLDER_PATH.split("/")[:-1]) + "/preprocessed_dataset_augmented/train"
 # sys.exit(0)
 
 # Load hyperparams from hyperparams.txt file if exists
