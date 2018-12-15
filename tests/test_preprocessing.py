@@ -1,12 +1,16 @@
 from image_recognition.preprocessing import Preprocessing
 import os
 
-image_path = FOLDER_PATH = os.path.dirname(os.path.abspath(__file__)) + '/anopheles.jpg'
-image_framed = image_path.replace(".jpg", "_framed.jpg")
-image_croped = image_path.replace(".jpg", "_cropped.jpg")
-preprocessing = Preprocessing(image_path)
+FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 
-framed = preprocessing.save_framed_img(image_framed)
-crop_resized = preprocessing.save_crop_img(image_croped)
+les_image_path = [FOLDER_PATH + '/anopheles.jpg',
+                  FOLDER_PATH + '/culex.jpg']
+for image_path in les_image_path:
+    image_framed = image_path.replace(".jpg", "_framed.jpg")
+    image_cropped = image_path.replace(".jpg", "_cropped.jpg")
+    preprocessing = Preprocessing(image_path)
 
-print("Images have been written to \n" + image_framed + "\n" + image_croped)
+    framed = preprocessing.save_framed_img(image_framed)
+    crop_resized = preprocessing.save_crop_img(image_cropped)
+
+    print("Images have been written to \n" + image_framed + "\n" + image_cropped)
