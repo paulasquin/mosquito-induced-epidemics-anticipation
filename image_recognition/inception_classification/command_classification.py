@@ -6,16 +6,19 @@ import subprocess
 import glob
 import tensorflow_hub as hub
 
-# Deactivation of Wwrning messages on compiled version
+# Deactivation of Warning messages on compiled version
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 TENSOR_FOLDER = "/".join(os.path.realpath(__file__).split("/")[:-1] + ["tensorflow"])
-IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset/train"])
-URL_MODULE = "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+IMAGE_DIR = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["preprocessed_dataset_augmented/train"])
+URL_MODULE = "https://tfhub.dev/google/imagenet/inception_v3/classification/1"
 
 
+#  "https://tfhub.dev/google/imagenet/inception_v3/classification/1"
 # "https://tfhub.dev/google/imagenet/pnasnet_large/classification/2"
 # "https://tfhub.dev/google/imagenet/inception_resnet_v2/classification/1"
+#  "https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/2"
+
 
 class Retrain(th.Thread):
     def __init__(self, tensor_folder):
@@ -250,3 +253,7 @@ def label_automatic(path_image):
     """
     prediction = Predict.label_image(path_image, TENSOR_FOLDER, automatic=True)
     return prediction
+
+
+if __name__ == "__main__":
+    train_and_monitor()
