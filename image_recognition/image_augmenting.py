@@ -9,7 +9,7 @@ import os
 import glob
 
 FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
-LES_AUGMENTATION = ['width-flip', 'height-flip', 'cwRotate', 'ccwRotate', 'inverse']
+LES_AUGMENTATION = ['original', 'width-flip', 'height-flip', 'cwRotate', 'ccwRotate', 'inverse']
 DATASET_PATH = FOLDER_PATH + "/preprocessed_dataset"
 AUGMENTED_FOLDER = DATASET_PATH + "_augmented"
 
@@ -55,6 +55,15 @@ class Augmentation:
             with PIL.Image.open(img_path) as img:
                 print(str(i + 1) + "/" + str(len(les_img_path)) + " : Augmenting " + img_path.split("/")[-1] + " " * 30)
                 for augmentation in LES_AUGMENTATION:
+                    if augmentation == 'original' and Augmentation.not_already_augmented(img_path=img_path,
+                                                                                         augmentation=augmentation,
+                                                                                         sub_augmented_path=sub_augmented_path):
+                        img.save(
+                            Augmentation.get_augmentation_path(
+                                img_path=img_path,
+                                augmentation=augmentation,
+                                sub_augmented_path=sub_augmented_path)
+                        )
                     if augmentation == 'width-flip' and Augmentation.not_already_augmented(img_path=img_path,
                                                                                            augmentation=augmentation,
                                                                                            sub_augmented_path=sub_augmented_path):
