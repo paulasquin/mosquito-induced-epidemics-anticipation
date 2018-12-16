@@ -5,52 +5,38 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import applications
 from keras import optimizers
 
-# path to the model weights files.
-weights_path = '../keras/examples/vgg16_weights.h5'
-top_model_weights_path = 'fc_model.h5'
-
 
 class Model:
 
-    def __init__(self, bottleneck_features_train_npy, bottleneck_features_validation_npy):
-        self.bottleneck_features_train_npy = bottleneck_features_train_npy
-        self.bottleneck_features_validation_npy = bottleneck_features_validation_npy
+    def __init__(self, img_height, img_width):
+        model = Sequential()
+        model.add(Conv2D(64, (3, 3), input_shape=(img_height, img_width, 3)))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2), dim_ordering="th"))
 
-        self.model = applications.VGG16(weights='imagenet', include_top=False)
-        print('Model loaded.')
+        model.add(Conv2D(64, (3, 3), dim_ordering="th"))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # build a classifier model to put on top of the convolutional model
-        top_model = Sequential()
-        top_model.add(Flatten(input_shape=self.model.output_shape[1:]))
-        top_model.add(Dense(256, activation='relu'))
-        top_model.add(Dropout(0.5))
-        top_model.add(Dense(1, activation='sigmoid'))
+        model.add(Conv2D(64, (3, 3)))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # note that it is necessary to start with a fully-trained
-        # classifier, including the top classifier,
-        # in order to successfully do fine-tuning
-        top_model.load_weights(top_model_weights_path)
+        model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+        model.add(Dense(64))
+        model.add(Activation('relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(1))
+        model.add(Activation('sigmoid'))
 
-        # add the model on top of the convolutional base
-        self.model.add(top_model)
+        model.compile(loss='categorical_crossentropy',
+                      optimizer='rmsprop',
+                      metrics=['accuracy'])
+        self.model = model
 
-        # set the first 25 layers (up to the last conv block)
-        # to non-trainable (weights will not be updated)
-        for layer in self.model.layers[:25]:
-            layer.trainable = False
-
-        # compile the model with a SGD/momentum optimizer
-        # and a very slow learning rate.
-        self.model.compile(loss='binary_crossentropy',
-                           optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
-                           metrics=['accuracy'])
-
-    def train_model(self, batch_size):
-        train_data = np.load(open(self.bottleneck_features_train_npy))
-        validation_data = np.load(open(self.bottleneck_features_validation_npy))
-
-        self.model.fit(train_data,
-                       epochs=50,
-                       batch_size=batch_size,
-                       validation_data=validation_data)
-        self.model.save_weights('bottleneck_fc_model.h5')
+    def train_model(self, batch_size, train_generator, validation_generator):
+        self.model.fit_generator(
+            train_generator,
+            validation_data=validation_generator
+        )
+        self.model.save_weights('first_try.h5')  # always save your weights after training or during training

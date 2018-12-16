@@ -7,8 +7,8 @@ class Bottleneck:
         self.bottleneck_validation_npy = model.bottleneck_features_validation_npy
         self.batch_size = batch_size
 
-        bottleneck_features_train = model.predict_generator(train_generator)
+        bottleneck_features_train = model.model.predict_generator(train_generator)
         np.save(str(open(self.bottleneck_train_npy, 'w')), bottleneck_features_train)
 
-        bottleneck_features_validation = model.predict_generator(validation_generator)
+        bottleneck_features_validation = model.model.predict_generator(validation_generator)
         np.save(str(open(self.bottleneck_validation_npy, 'w')), bottleneck_features_validation)
