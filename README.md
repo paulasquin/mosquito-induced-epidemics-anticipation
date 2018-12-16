@@ -108,7 +108,7 @@ Remove the [image_recognition/preprocessed_dataset](image_recognition/preprocess
 
 ## Augment the dataset
 In order to improve our models accuracy, a good way to augment the data is to propose rotated pictures.
-Thus, to perform augmentatin as ```width-flip, height-flip, cwRotate, ccwRotate, inverse``` run:
+Thus, to perform augmentation as ```width-flip, height-flip, cwRotate, ccwRotate, inverse``` run:
 ```bash
 python3 -m image_recognition.image_augmenting
 ```
@@ -134,46 +134,42 @@ Please note that you can change the Neural Network parameters, that we call Hype
 Here are the influences of each parameter: 
 
 **NUM_ITERATION**: number of training iterations.  
-\+ If too tall, the model still works but in the end will not learn anymore and performs unnecessary calculations  
-\- If it is too small, the model does not have time to reach its actual performance  
+\+ If too big, the model still works but take a very long time and will end not learning anymore and performs unnecessary calculations
+\- If it is too small, the model does not have time to reach its actual performance
+  
 
-**BATCH_SIZE**: The size of the image subpacket used for each train iteration.  
-\+ If too large, the necessary calculations and memory explode and the performance of the model decreases by loss of the generalization capacity.  
-\- If too small, gradient descents are less representative and performance calculations become noisy.  
+**BATCH_SIZE**: size of the image subpacket used for each train iteration.  
+\+ If too large, the necessary calculations and memory explode and the performance of the model decreases by loss of the generalization capacity.
+\- If too small, gradient descents are less representative and performance calculations become noisy.
+  
 
 **LEARNING_RATE**: learning speed, speed coefficient of the gradient descent.  
-\+ If too large, the gradient descent can lead to a divergence.  
-\- If too low greatly slows the speed of calculation.  
+\+ If too large, the gradient descent can lead to a divergence.
+\- If too low greatly slows the speed of calculation.
+  
 
-**SHORTER_DATASET_VALUE** optional: limit the number of images per categories.  
-\+ If the number of files used is too large, the demand in memory and calculation explodes.  
-\- If this number is too low, the model is lacking data to learn in a representative way.  
+**LES_CONV_FILTER_SIZE**: list of the size of the convolution filters, in other words, the size of the local area to study. See Figures 4 & 5 of [this page](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)  
+\+ If values are too large or if the list is too big, real features will become invisible to the model and we will underfit.
+\- If values are too small or the list to small, the model will not be able to clear features effectively and we will overfit.
+  
 
-**IMG_SIZE**: size in pixels of images, with a native maximum of 500px.  
-\+ If too big, the resolution of the images explodes the request in memory and calculation. Similarly, this feature may not be representative of the user application.  
-\- If too small, the resolution of the images no longer makes it possible to identify features on the cards.  
-
-**LES_CONV_FILTER_SIZE**: list of the size of the convolution filters, that is to say size of the local area to study. See Figures 4 & 5 of [this page](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)  
-\+ If values are too large or if the list is too big, features will become invisible to the model.  
-\- If values are too small or the list to small, the model will not be able to clear features effectively.  
-
-**LES_NUM_FILTERS_CONV**: list of the number of filters per convolution layer, that is to say number of neurons per layer.  
-\+ If the values are too large, the memory and the necessary computing capacity grow enormously.  
-\- If the values are too small, the model is not complex enough and can not learn data.  
+**LES_NUM_FILTERS_CONV**: list of the number of filters per convolution layer, in other words number of neurons per layer.  
+\+ If the values are too large, the memory and the necessary computing capacity grow enormously.
+\- If the values are too small, the model is not complex enough and can not learn well.
+  
 
 **FC_LAYER_SIZE**: size of the last Fully Connected layer (cf figure 9 in [this page](https://medium.com/@RaghavPrabhu/understanding-of-convolutional-neural-network-cnn-deep-learning-99760835f148)).  
-\+ If the value is too large, the memory charge explodes.  
-\- If the value is too low, the accuracy of the model falls considerably.  
+\+ If the value is too large, the memory charge explodes.
+\- If the value is too low, the accuracy of the model falls considerably.
+  
 
 For instance you can have:
 ```
 NUM_ITERATION = 500
-BATCH_SIZE = 30
-LEARNING_RATE = 0.001
-SHORTER_DATASET_VALUE = 0
-IMG_SIZE = 256
-LES_CONV_FILTER_SIZE = [5, 5, 5, 3, 3, 3]
-LES_NUM_FILTERS_CONV = [128, 128, 128, 64, 64, 64]
+BATCH_SIZE = 32
+LEARNING_RATE = 0.00001
+LES_CONV_FILTER_SIZE = [3, 3, 3, 3, 3, 3, 3, 3, 3]
+LES_NUM_FILTERS_CONV = [256, 256, 256, 128, 128, 128, 64, 64, 64]
 FC_LAYER_SIZE = 128
 ```
 Note : be sure that **LES_CONV_FILTER_SIZE** and **LES_NUM_FILTERS_CONV** lists have the same lengths.
@@ -189,10 +185,11 @@ You should get ```Success!```.
 
 ## Test image preprocessing
 As explained before, you know that for improving our models accuracy, we have to preprocessed images and crop them to the insect they contains.
-To test this features you can run:
+To test this features, remove the *_cropped.jpg and *_framed.jpg pictures from the ```tests``` folder, then run:
 ```bash
 python3 -m tests.test_preprocessing
 ```
+You should end with preprocessed images on the ```tests``` folder.
   
   
 ## Test inception retraining and labelling
@@ -207,7 +204,7 @@ python3 -m tests.test_inception_classification [command]
 ```
 
 
-# Code explanation
+# Code structure presentation
 ## .env
 This file contain the API key used for preprocessing the dataset, for the insect-cropping process.
 
@@ -233,7 +230,7 @@ Test the .env existence and operation
 Test image recognition on the inception retraining side.
 You can test inception retraining and inception image labelling:
 ```bash
-python3 -m tests.test_inception_classification [command]
+    python3 -m tests.test_inception_classification [command]
 ```
 ```[command]``` can be 
 ```
@@ -283,6 +280,9 @@ The dataset after having perform augmentation on the preprocessed_dataset
 
 ### inception_classification/
 Inception retraining to perform picture classification
+
+### keras/
+Keras trials we haven't had to our report as it haven't led us to more results.  
 
 #### command_classification.py
 Perform retrain, monitoring and predict commands.
