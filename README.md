@@ -117,9 +117,10 @@ python3 -m image_recognition.image_augmenting
 # Train models   
 ## Run an Inception retraining  
 ```bash
-python3 -m image_recognition.inception_classification.command_classification.train_and_monitor
+python3 -m image_recognition.inception_classification.command_classification
 ```
- 
+You will be able to monitor the retraining at ```127.0.0.1:6006```
+
 ## Run a From Scratch Neural Network training  
 ### Run the training  
 ```bash
