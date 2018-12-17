@@ -1,2 +1,5 @@
 .env
 *.pyc
+malaria_mosquito_geo/.ipynb_checkpoints/
+malaria_mosquito_geo/openweather-cache.db
+
