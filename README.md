@@ -20,6 +20,14 @@ a. [Malarial Mosquito Database](https://www.kaggle.com/jboysen/malaria-mosquito/
 b. [The fight against malaria](https://www.kaggle.com/teajay/the-fight-against-malaria)  
 *Who is dying and being saved from this destructive disease?*
 
+# Risk areas identification
+This part of the project can be explored through the jupyter notebook [malaria_mosquito_geo/Data_analysis.ipynb](malaria_mosquito_geo/Data_analysis.ipynb).  
+Just move to this part of the project and run a notebook server:
+```
+cd malaria_mosquito_geo
+jupyter notebook
+```
+
 # Installation
 ## Without Docker
 First of all, be sure to have python3 and pip3 installed.
